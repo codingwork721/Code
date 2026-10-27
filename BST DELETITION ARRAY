@@ -1,0 +1,137 @@
+
+#include <iostream>
+using namespace std;
+
+// Array to store the BST
+int tree[100];
+
+// Insert a value into BST
+void insert(int x)
+{
+    int i = 0;
+
+    // Find an empty position
+    while(i < 100 && tree[i] != -1)
+    {
+        if(x < tree[i])
+            i = 2*i + 1;  // Left child
+        else
+            i = 2*i + 2;  // Right child
+    }
+
+    // Store the value
+    if(i < 100)
+        tree[i] = x;
+}
+
+// Delete a value from BST
+void deleteNode(int x)
+{
+    int i = 0;
+
+    // Search for the value
+    while(i < 100 && tree[i] != -1 && tree[i] != x)
+    {
+        if(x < tree[i])
+            i = 2*i + 1;  // Search left
+        else
+            i = 2*i + 2;  // Search right
+    }
+
+    // If value is not found
+    if(i >= 100 || tree[i] == -1)
+    {
+        cout << "Value not found!" << endl;
+        return;
+    }
+
+    // Find child positions
+    int left = 2*i + 1;
+    int right = 2*i + 2;
+
+    // CASE 1: Node has no children
+    // Example: Delete 20 when it is a leaf
+    if((left >= 100 || tree[left] == -1) &&
+       (right >= 100 || tree[right] == -1))
+    {
+        tree[i] = -1;
+    }
+    else
+    {
+        int values[100];
+        int count = 0;
+
+        // CASE 2: Node has one child
+        // Example: Delete 30 when it has only child 40
+        //
+        // CASE 3: Node has two children
+        // Example: Delete 50 when it has children 30 and 70
+        //
+        // Save all values except the one being deleted
+        for(int j = 0; j < 100; j++)
+        {
+            if(tree[j] != -1 && j != i)
+            {
+                values[count] = tree[j];
+                count++;
+            }
+        }
+
+        // Empty the tree array
+        for(int j = 0; j < 100; j++)
+            tree[j] = -1;
+
+        // Insert the saved values again
+        // This rebuilds the BST
+        for(int j = 0; j < count; j++)
+            insert(values[j]);
+    }
+}
+
+// Display the BST array
+void display()
+{
+    cout << "BST Array:" << endl;
+
+    for(int i = 0; i < 100; i++)
+    {
+        if(tree[i] != -1)
+            cout << "Index " << i << " = " << tree[i] << endl;
+    }
+}
+
+int main()
+{
+    // Initially, all positions are empty
+    for(int i = 0; i < 100; i++)
+        tree[i] = -1;
+
+    // Create the BST
+    insert(50);
+    insert(30);
+    insert(70);
+    insert(20);
+    insert(40);
+    insert(60);
+    insert(80);
+
+    cout << "Original BST:" << endl;
+    display();
+
+    // CASE 1: Delete leaf node 20
+    deleteNode(20);
+
+    // CASE 2 example: Delete node 30
+    // Its remaining child is 40 after deleting 20
+    deleteNode(30);
+
+    // CASE 3 example: Delete node 50
+    // It has two children in the current tree
+    deleteNode(50);
+
+    cout << "\nBST after deletion:" << endl;
+    display();
+
+    return 0;
+}
+
