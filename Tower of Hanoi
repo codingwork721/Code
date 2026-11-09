@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+
+void hanoi(int n, char S, char H, char D)
+{
+    if (n == 1)
+    {
+        cout << "Move disk 1 from " << S << " to " << D << endl;
+        return;
+    }
+
+    hanoi(n - 1, S, D, H);
+
+    cout << "Move disk " << n << " from " << S << " to " << D << endl;
+
+    hanoi(n - 1, H, S, D);
+}
+
+int main()
+{
+    hanoi(3, 'A', 'B', 'C');
+    return 0;
+}
