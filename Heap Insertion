@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+int heap[100];
+int n = 0;
+
+void insert(int x)
+{
+    int i = n;
+    heap[i] = x;
+    n++;
+
+    while (i > 0 && heap[(i - 1) / 2] < heap[i])
+    {
+        swap(heap[i], heap[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+void display()
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << heap[i] << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    insert(50);
+    insert(30);
+    insert(40);
+    insert(10);
+    insert(20);
+    insert(35);
+    insert(25);
+    insert(45);
+
+    cout << "Max Heap: ";
+    display();
+
+    return 0;
+}
