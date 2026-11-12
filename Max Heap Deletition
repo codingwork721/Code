@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+int heap[100];
+int n = 0;
+
+void insert(int x)
+{
+    int i = n;
+    heap[i] = x;
+    n++;
+
+    while (i > 0 && heap[(i - 1) / 2] < heap[i])
+    {
+        swap(heap[i], heap[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+void deleteMax()
+{
+    if (n == 0)
+    {
+        cout << "Heap is empty!" << endl;
+        return;
+    }
+
+    cout << "Deleted element: " << heap[0] << endl;
+
+    heap[0] = heap[n - 1];
+    n--;
+
+    int i = 0;
+
+    while (true)
+    {
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        int largest = i;
+
+        if (left < n && heap[left] > heap[largest])
+            largest = left;
+
+        if (right < n && heap[right] > heap[largest])
+            largest = right;
+
+        if (largest == i)
+            break;
+
+        swap(heap[i], heap[largest]);
+        i = largest;
+    }
+}
+
+int main()
+{
+    insert(50);
+    insert(30);
+    insert(40);
+    insert(10);
+    insert(20);
+
+    cout << "Max Heap: ";
+    for (int i = 0; i < n; i++)
+        cout << heap[i] << " ";
+
+    cout << endl;
+
+    deleteMax();
+
+    cout << "After Deletion: ";
+    for (int i = 0; i < n; i++)
+        cout << heap[i] << " ";
+
+    return 0;
+}
